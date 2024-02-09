@@ -53,31 +53,37 @@ export async function POST(req: Request) {
   }
 
   // Get the ID and type
-  const { id} = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === "user.created") {
-    const { id, image_url, username } = evt.data;
+    try {
+      const { id, image_url, username } = evt.data;
 
-    const user = {
-      clerkId: id,
-      userName: username!,
-      imageUrl: image_url,
-    };
+      const user = {
+        clerkId: id,
+        userName: username!,
+        imageUrl: image_url,
+      };
 
-    const newUser = await db.user.create({
-      data: user,
-    });
-
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser.id,
+      const newUser = await db.user.create({
+        data: {
+          ...user,
         },
       });
-    }
 
-    return NextResponse.json({ message: "OK", user: newUser });
+      if (newUser) {
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            userId: newUser.id,
+          },
+        });
+      }
+
+      return NextResponse.json({ message: "OK", user: newUser });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if (eventType === "user.updated") {
@@ -95,7 +101,7 @@ export async function POST(req: Request) {
   if (eventType === "user.deleted") {
     await db.user.delete({
       where: {
-        clerkId:payload.data.id as string,
+        clerkId: payload.data.id as string,
       },
     });
   }
