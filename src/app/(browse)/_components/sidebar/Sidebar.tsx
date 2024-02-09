@@ -3,10 +3,10 @@ import Wrapper from "./Wrapper";
 import Trigger from "./Trigger";
 import Recommended from "./Recommended";
 import { getRecommendedUsers } from "@/actions/getRecommendedUsers";
+import { User } from "@prisma/client";
 
 const Sidebar = async () => {
-  const recommended  = await getRecommendedUsers()
-  console.log(recommended);
+  const recommended : User[]   = await getRecommendedUsers()
   
   return (
     <Wrapper>
