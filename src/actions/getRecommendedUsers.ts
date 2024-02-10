@@ -7,18 +7,30 @@ export const getRecommendedUsers = async () => {
   const userId = user?.publicMetadata.userId;
 
   if (userId) {
-    const Recommended : User[] = await db.user.findMany({
+    const Recommended: User[] = await db.user.findMany({
       where: {
-        NOT: {
-          id: userId,
-        },
+        AND: [
+          {
+            NOT: {
+              id: userId,
+            },
+          },
+          {
+            NOT: {
+              followedBy: {
+                some: {
+                  followerId: userId,
+                },
+              },
+            },
+          },
+        ],
       },
     });
-    return Recommended
+    return Recommended;
   }
 
-  const Recommended = await db.user.findMany({})
+  const Recommended = await db.user.findMany({});
 
-  return Recommended
-  }
-
+  return Recommended;
+};

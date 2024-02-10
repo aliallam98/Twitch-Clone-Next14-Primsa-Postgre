@@ -2,18 +2,18 @@
 
 import useSidebar from "@/hooks/useSidebar";
 import { cn } from "@/lib/utils";
-import React from "react";
+import { Follow, User } from "@prisma/client";
 import UserItem from "../UserItem";
-import { User } from "@prisma/client";
 
 interface IProps {
-  data: User[];
+  following: (Follow & { following: User })[];
 }
-const Recommended = ({ data }: IProps) => {
+
+const Following = ({ following }: IProps) => {
   const isCollapsed = useSidebar((state) => state.isCollapsed);
 
-  if (!data.length) {
-    return null;
+  if(!following.length){
+    return null
   }
 
   return (
@@ -24,15 +24,15 @@ const Recommended = ({ data }: IProps) => {
           !isCollapsed && "lg:block"
         )}
       >
-        Recommended
+        Following
       </p>
-      {data.length > 0 && (
+      {following.length > 0 && (
         <div>
-          {data.map((user) => (
+          {following.map((user) => (
             <UserItem
-              key={user.id}
-              imageUrl={user.imageUrl}
-              username={user.userName}
+              key={user.following.id}
+              imageUrl={user.following.imageUrl}
+              username={user.following.userName}
               isLive
             />
           ))}
@@ -42,4 +42,4 @@ const Recommended = ({ data }: IProps) => {
   );
 };
 
-export default Recommended;
+export default Following;
