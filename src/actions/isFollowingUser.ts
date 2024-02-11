@@ -1,6 +1,5 @@
 import db from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
-import { User } from "@prisma/client";
 
 export const isFollowingUser = async (id: string) => {
   const user = await currentUser();

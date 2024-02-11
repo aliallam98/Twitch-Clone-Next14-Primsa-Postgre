@@ -1,17 +1,20 @@
 "use client";
 
 import { unFollowUser } from "@/actions/UnFollowUser";
+import { blockUser } from "@/actions/blockUser";
 import { followUser } from "@/actions/followUser";
+import { unBlockUser } from "@/actions/unBlockUser";
 import { Button } from "@/components/ui/button";
 import React, { useTransition } from "react";
 import { toast } from "sonner";
 
 interface IProps {
   isFollowing: boolean;
+  isBlocked: boolean;
   id: string;
 }
 
-const Actions = ({ isFollowing, id }: IProps) => {
+const Actions = ({ isFollowing, isBlocked, id }: IProps) => {
   const [inPending, startTransition] = useTransition();
 
   const onUnFollowHandler = () => {
@@ -25,7 +28,7 @@ const Actions = ({ isFollowing, id }: IProps) => {
         });
     });
   };
-  
+
   const onFollowHandler = () => {
     startTransition(async () => {
       await followUser(id)
@@ -37,17 +40,39 @@ const Actions = ({ isFollowing, id }: IProps) => {
         });
     });
   };
+
+  const onClickHandler = () => {
+    isFollowing ? onUnFollowHandler() : onFollowHandler();
+  };
+
+  const blockHandler = () => {
+    if (isBlocked) {
+      startTransition(async () => {
+        await unBlockUser(id)
+          .then((data) =>
+            toast.success(`You're blocked the user ${data?.blocked.userName}`)
+          )
+          .catch(() => toast.error("Something went wrong"));
+      });
+    } else {
+      startTransition(async () => {
+        await blockUser(id)
+          .then((data) =>
+            toast.success(`Unblocked the user ${data?.blocked.userName}`)
+          )
+          .catch(() => toast.error("Something went wrong"));
+      });
+    }
+  };
+
   return (
     <div>
-      {isFollowing ? (
-        <Button disabled={inPending} onClick={onUnFollowHandler}>
-          UnFollow
-        </Button>
-      ) : (
-        <Button disabled={inPending} onClick={onFollowHandler}>
-          Follow
-        </Button>
-      )}
+      <Button disabled={inPending} onClick={onClickHandler}>
+        {isFollowing ? "UnFollow" : "Follow"}
+      </Button>
+      <Button disabled={inPending} onClick={blockHandler}>
+        {isBlocked ? "UnBlock" : "Block"}
+      </Button>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { User } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 import Actions from "./_components/Actions";
+import { isBlockedUser } from "@/actions/isBlockedUser";
 
 interface IProps {
   params: {
@@ -20,12 +21,24 @@ const UserPage = async ({ params }: IProps) => {
   // check if Following
 
   const isFollowing = await isFollowingUser(userInfo?.id);
+  const isBlocked = await isBlockedUser(userInfo?.id);
+  console.log(isBlocked);
+  
+
+  if (isBlocked) {
+    return notFound();
+  }
 
   return (
     <div>
       <p>Username : {userInfo?.userName}</p>
       <p>isFollowing : {`${isFollowing}`}</p>
-      <Actions  isFollowing={isFollowing!} id={userInfo?.id}/>
+      <p>isBlocked : {`${isBlocked}`}</p>
+      <Actions
+        isFollowing={isFollowing!}
+        isBlocked={isBlocked!}
+        id={userInfo?.id}
+      />
     </div>
   );
 };
