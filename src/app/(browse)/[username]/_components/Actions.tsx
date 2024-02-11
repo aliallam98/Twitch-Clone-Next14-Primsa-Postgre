@@ -10,11 +10,14 @@ import { toast } from "sonner";
 
 interface IProps {
   isFollowing: boolean;
-  isBlocked: boolean;
+  blockData: {
+    isBlockedByThisUser: boolean;
+    amIBlocker: boolean;
+  }
   id: string;
 }
 
-const Actions = ({ isFollowing, isBlocked, id }: IProps) => {
+const Actions = ({ isFollowing, blockData, id }: IProps) => {
   const [inPending, startTransition] = useTransition();
 
   const onUnFollowHandler = () => {
@@ -45,24 +48,30 @@ const Actions = ({ isFollowing, isBlocked, id }: IProps) => {
     isFollowing ? onUnFollowHandler() : onFollowHandler();
   };
 
+  const onBlockHandler = () => {
+    startTransition(async () => {
+      await blockUser(id)
+        .then((data) =>
+          toast.success(`You're blocked the user ${data?.blocked.userName}`)
+        )
+        .catch(() => toast.error("Something went wrong"));
+    });
+  };
+
+  const onUnBlockHandler = () => {
+    startTransition(async () => {
+      await unBlockUser(id)
+        .then((data) =>
+          toast.success(`Unblocked the user ${data?.blocked.userName}`)
+        )
+        .catch(() => toast.error("Something went wrong"));
+    });
+  };
+
+  console.log("blockDataByThisUser", blockData.amIBlocker);
+
   const blockHandler = () => {
-    if (isBlocked) {
-      startTransition(async () => {
-        await unBlockUser(id)
-          .then((data) =>
-            toast.success(`You're blocked the user ${data?.blocked.userName}`)
-          )
-          .catch(() => toast.error("Something went wrong"));
-      });
-    } else {
-      startTransition(async () => {
-        await blockUser(id)
-          .then((data) =>
-            toast.success(`Unblocked the user ${data?.blocked.userName}`)
-          )
-          .catch(() => toast.error("Something went wrong"));
-      });
-    }
+    blockData.amIBlocker ? onUnBlockHandler() : onBlockHandler();
   };
 
   return (
@@ -71,7 +80,7 @@ const Actions = ({ isFollowing, isBlocked, id }: IProps) => {
         {isFollowing ? "UnFollow" : "Follow"}
       </Button>
       <Button disabled={inPending} onClick={blockHandler}>
-        {isBlocked ? "UnBlock" : "Block"}
+        {blockData.amIBlocker ? "UnBlock" : "Block"}
       </Button>
     </div>
   );

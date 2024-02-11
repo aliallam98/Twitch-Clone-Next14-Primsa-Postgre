@@ -2,6 +2,7 @@
 
 import db from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
+import { revalidatePath } from "next/cache";
 
 export const blockUser = async (id: string) => {
   try {
@@ -18,10 +19,12 @@ export const blockUser = async (id: string) => {
       throw new Error("User not found");
     }
 
-    const isBlocked = await db.block.findFirst({
+    const isBlocked = await db.block.findUnique({
       where: {
-        blockerId: loggedInUserId,
-        blockedId: userToBlock.id,
+        blockedId_blockerId:{
+          blockerId: loggedInUserId,
+          blockedId: userToBlock.id,
+        }
       },
     });
 
@@ -39,6 +42,8 @@ export const blockUser = async (id: string) => {
       },
     });
 
+
+    revalidatePath(`/${block.blocked.userName}`)
     return block;
   } catch (error) {
     console.log(error);

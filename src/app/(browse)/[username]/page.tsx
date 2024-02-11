@@ -21,11 +21,11 @@ const UserPage = async ({ params }: IProps) => {
   // check if Following
 
   const isFollowing = await isFollowingUser(userInfo?.id);
-  const isBlocked = await isBlockedUser(userInfo?.id);
-  console.log(isBlocked);
-  
+  const blockData  = await isBlockedUser(userInfo?.id) as { isBlockedByThisUser: boolean; amIBlocker: boolean; } 
 
-  if (isBlocked) {
+  console.log("Api", blockData);
+
+  if (blockData.isBlockedByThisUser) {
     return notFound();
   }
 
@@ -33,10 +33,10 @@ const UserPage = async ({ params }: IProps) => {
     <div>
       <p>Username : {userInfo?.userName}</p>
       <p>isFollowing : {`${isFollowing}`}</p>
-      <p>isBlocked : {`${isBlocked}`}</p>
+      <p>isBlockedByThisUser : {`${blockData?.isBlockedByThisUser}`}</p>
       <Actions
         isFollowing={isFollowing!}
-        isBlocked={isBlocked!}
+        blockData={blockData!}
         id={userInfo?.id}
       />
     </div>

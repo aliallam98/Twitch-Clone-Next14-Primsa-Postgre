@@ -23,26 +23,26 @@ export const isBlockedUser = async (id: string) => {
 
     const isBlocked = await db.block.findUnique({
       where: {
-        blockedId_blockerId:{
+        blockedId_blockerId: {
           blockerId: isUserExist.id,
           blockedId: loggedIngUserId,
-        }
+        },
       },
     });
 
-    // const amIBlocker =  await db.block.findUnique({
-    //   where: {
-    //     blockedId_blockerId:{
-    //       blockerId: loggedIngUserId,
-    //       blockedId: isUserExist.id ,
-    //     }
-    //   },
-    // });
+    const amIBlocker = await db.block.findUnique({
+      where: {
+        blockedId_blockerId: {
+          blockerId: loggedIngUserId,
+          blockedId: isUserExist.id,
+        },
+      },
+    });
 
     // amIBlocker:!!amIBlocker
 
-    return !!isBlocked
+    return { isBlockedByThisUser: !!isBlocked, amIBlocker: !!amIBlocker };
   } catch (error) {
-    return false
+     throw new Error("Internal server error")
   }
 };

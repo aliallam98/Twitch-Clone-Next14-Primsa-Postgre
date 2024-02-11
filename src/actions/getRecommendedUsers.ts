@@ -24,6 +24,15 @@ export const getRecommendedUsers = async () => {
               },
             },
           },
+          {
+            NOT: {
+              blocking: {
+                some: {
+                  blockedId: userId,
+                },
+              },
+            },
+          },
         ],
       },
     });

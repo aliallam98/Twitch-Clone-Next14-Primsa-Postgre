@@ -24,8 +24,8 @@ model User {
   followedBy Follow[] @relation("FollowedBy")
 
 
-  blocker Block[] @relation("Blocking")
-  blocked Block[] @relation("BlockedBy")
+  blocking Block[] @relation("Blocking")
+  blockedBy Block[] @relation("BlockedBy")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
