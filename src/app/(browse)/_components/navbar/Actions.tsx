@@ -20,7 +20,7 @@ const Actions = async () => {
         <div className="flex items-center gap-x-2">
           <Link
             role={"button"}
-            href={`/u/${user?.username}}`}
+            href={`/u/${user?.username}`}
             className="flex items-center gap-x-2"
           >
             <span className="hidden lg:block">Dashboard</span>

@@ -24,7 +24,7 @@ const UserItem = ({ username, imageUrl, isLive, showLiveBadge }: IProps) => {
       variant={"ghost"}
       asChild
       className={cn(
-        "w-full h- flex",
+        "w-full h-12 flex",
         isActive && "bg-accent",
         isCollapsed ? "justify-center" : "justify-start"
       )}
@@ -32,8 +32,8 @@ const UserItem = ({ username, imageUrl, isLive, showLiveBadge }: IProps) => {
       <Link href={href}>
         <div
           className={cn(
-            "flex items-center gap-2 w-full",
-            isCollapsed && "justify-center"
+            "flex items-center justify-center lg:justify-start gap-2 w-full",
+            isCollapsed && "lg:justify-center"
           )}
         >
           <UserAvatar

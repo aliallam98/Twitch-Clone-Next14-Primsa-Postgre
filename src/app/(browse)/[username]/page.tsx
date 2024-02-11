@@ -23,7 +23,7 @@ const UserPage = async ({ params }: IProps) => {
   const isFollowing = await isFollowingUser(userInfo?.id);
   const blockData  = await isBlockedUser(userInfo?.id) as { isBlockedByThisUser: boolean; amIBlocker: boolean; } 
 
-  console.log("Api", blockData);
+  // console.log("Api", blockData);
 
   if (blockData.isBlockedByThisUser) {
     return notFound();

@@ -1,7 +1,6 @@
 "use client";
 
-import useSidebar from "@/hooks/useSidebar";
-// import useSidebar from "@/hooks/useSidebar"
+import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 import { cn } from "@/lib/utils";
 
 interface IProps {
@@ -9,12 +8,12 @@ interface IProps {
 }
 
 const Wrapper = ({ children }: IProps) => {
-  const isCollapsed = useSidebar((state) => state.isCollapsed);
+  const isCollapsed = useDashboardSidebar((state) => state.isCollapsed);
   return (
     <aside
       className={cn(
-        "flex flex-col h-screen w-[70px] lg:w-60 border-r px-2 py-2",
-        isCollapsed && "lg:w-[70px] "
+        "flex flex-col h-screen w-[70px] lg:w-60 border-r lg:px-2 py-2",
+        isCollapsed && "lg:w-[70px] lg:p-0"
       )}
     >
       {children}

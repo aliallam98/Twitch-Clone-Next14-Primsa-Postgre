@@ -17,10 +17,10 @@ const Recommended = ({ data }: IProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 mt-4 ">
+    <div className="flex flex-col gap-2 mt-4">
       <p
         className={cn(
-          "text-sm text-muted-foreground hidden lg:pl-6 mb-1",
+          "text-sm text-muted-foreground hidden",
           !isCollapsed && "lg:block"
         )}
       >

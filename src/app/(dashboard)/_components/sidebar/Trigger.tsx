@@ -1,19 +1,20 @@
 "use client";
 import Hint from "@/components/Hint";
 import { Button } from "@/components/ui/button";
-import useSidebar from "@/hooks/useSidebar";
+import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 import { ArrowLeftFromLineIcon, ArrowRightFromLineIcon } from "lucide-react";
 import React from "react";
 
 const Trigger = () => {
-  const { isCollapsed, onExpand, onCollapse } = useSidebar();
+  const { isCollapsed, onExpand, onCollapse } = useDashboardSidebar();
+
   const label = isCollapsed ? "Expand" : "Collapse";
 
   return (
     <div className="hidden lg:block">
       {!isCollapsed && (
-        <div className="flex items-center w-full mt-2 lg:pl-6 ">
-          <p className="font-semibold">For You</p>
+        <div className="flex items-center w-full mt-2">
+          <p className="font-semibold">Dashboard</p>
           <Hint label={label} asChild side="right">
             <Button
               className="ml-auto h-auto p-2"

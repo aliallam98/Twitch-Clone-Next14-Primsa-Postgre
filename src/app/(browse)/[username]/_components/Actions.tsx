@@ -68,7 +68,7 @@ const Actions = ({ isFollowing, blockData, id }: IProps) => {
     });
   };
 
-  console.log("blockDataByThisUser", blockData.amIBlocker);
+  // console.log("blockDataByThisUser", blockData.amIBlocker);
 
   const blockHandler = () => {
     blockData.amIBlocker ? onUnBlockHandler() : onBlockHandler();
