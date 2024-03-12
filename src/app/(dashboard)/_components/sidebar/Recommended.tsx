@@ -3,8 +3,8 @@
 import useSidebar from "@/hooks/useSidebar";
 import { cn } from "@/lib/utils";
 import React from "react";
-import UserItem from "../UserItem";
 import { User } from "@prisma/client";
+import UserItem from "@/app/(browse)/_components/UserItem";
 
 interface IProps {
   data: User[];
